@@ -10,6 +10,10 @@ import re
 
 
 def read_excel(path):
+    '''
+    :param path: path
+    :return: _list[],表里面的内容
+    '''
     _list = []
     xlrd.Book.encoding = "utf8"  # 设置编码
     data = xlrd.open_workbook(path)
@@ -22,6 +26,7 @@ def read_excel(path):
 
 
 def get_year(url):
+    '''解析网址,返回url跟年份'''
     print(datetime.datetime.now())
     header = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.79 Safari/537.36'
@@ -32,7 +37,6 @@ def get_year(url):
     years1 = doc.xpath('//a[@target="issue"]')
     years2 = doc.xpath('//*[@id="yearIssueInfo"]/ul/li/a')
     years3 = doc.xpath('//*[@id="yearIssueInfo"]/ul/li/a')
-    # years3 = doc.xpath('//*[@id="drpYear"]/option')
     _year = []
     for years in [years1, years2,years3]:
         if years:
@@ -40,9 +44,12 @@ def get_year(url):
             for year in years:
                 year = year.xpath('text()')[0]
                 year = re.sub('[^\d]', '', year)
+                if year =='':
+                    continue
                 _year.append(year)
             break
-    _year.remove('')
+    # if '' in _year:
+    #     _year.remove('')
     print(_year)
     try:
         year_max = max(_year)
@@ -61,12 +68,13 @@ def get_year(url):
 
 
 def write_excel(path):
+    '''写入文件'''
     urls = read_excel(path)
     for url in urls:
         a = get_year(url)
         url = a[0]
         year = a[1]
-        result = url + '    ' + year
+        result = url + '    ' + year+'\n'
         # 参数对应 行, 列, 值
         with open('cnki.txt', 'a+') as f:
             f.write(result)
@@ -87,8 +95,11 @@ def write_excel(path):
 #         n +=1
 #     # workbook.save('Excel_test.xls')
 if __name__ == '__main__':
-    path = r'C:\Users\Administrator\Desktop\CNKI-A.xlsx'
-    # write_excel(path)
-    url = 'http://oversea.cnki.net/kns55/oldnavi/n_CNKIPub.aspx?naviid=69&Flg=local&BaseID=AQHJ&NaviLink=Initial+Pinyin+of+Title%3aA-%2fkns55%2foldnavi%2fn_list.aspx%3fNaviID%3d48%26Field%3dpy_203%26Flg%3dlocal%26Value%3dA%7cJournal+of+Safety+and+Environment'
-    a = get_year(url)
-    print(a)
+    path = r'C:\Users\victor\Desktop\CNKI-A.xlsx'
+    write_excel(path)
+    # url = 'http://oversea.cnki.net/kns55/oldnavi/n_CNKIPub.aspx?naviid=69&Flg=local&BaseID=AQHJ&NaviLink=Initial+Pinyin+of+Title%3aA-%2fkns55%2foldnavi%2fn_list.aspx%3fNaviID%3d48%26Field%3dpy_203%26Flg%3dlocal%26Value%3dA%7cJournal+of+Safety+and+Environment'
+    # a = get_year(url)
+    # print(a)
+    # a = ['2017', '2016', '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007', '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998', '1997', '1996', '1995', '1994', '']
+    # a.remove('')
+    # print(a)

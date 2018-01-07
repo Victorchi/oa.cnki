@@ -68,10 +68,10 @@ def send_email(text,mail):
 
     # 第三方 SMTP 服务
     mail_host = "smtp.163.com"  # 设置服务器
-    mail_user = "qwe312231@163.com"  # 用户名
-    mail_pass = "qwe123456"  # 口令
+    mail_user = "xxx"  # 用户名
+    mail_pass = "xxx"  # 口令
 
-    sender = 'qwe312231@163.com'
+    sender = 'xxx'
     receivers = [mail]  # 接收邮件，可设置为你的QQ邮箱或者其他邮箱
 
     message = MIMEText(text, 'plain', 'utf-8')
@@ -94,7 +94,7 @@ def send_email(text,mail):
 
 
 if __name__ == '__main__':
-    user = [{'user':'CLF10429','pwd':'CLF973918','mail':'751290507@qq.com'}]
+    user = [{'user':'xxx','pwd':'xxx','mail':'xxx'}]
     for i in user:
        run(i.get('user'),i.get('pwd'),i.get('mail'))
 
